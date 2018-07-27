@@ -9,7 +9,7 @@ import (
 var config Config
 
 func main() {
-	fmt.Println("pinit 0.1 Copyright (c) 2018 Maksim Pinigin <pinigin@nvie.ru>")
+	//fmt.Println("pinit 0.1 Copyright (c) 2018 Maksim Pinigin <pinigin@nvie.ru>")
 
 	var loadConfResult bool
 	switch runtime.GOOS {

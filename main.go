@@ -6,7 +6,10 @@ import (
 	"runtime"
 )
 
-var config Config
+var config map[string]interface{}
+var servicesPath string
+
+//var startedService []os.Process
 
 func main() {
 	//fmt.Println("pinit 0.1 Copyright (c) 2018 Maksim Pinigin <pinigin@nvie.ru>")
@@ -18,7 +21,7 @@ func main() {
 	case "windows":
 		loadConfResult = LoadConfig("C:\\pinit\\configuration.json")
 	default:
-		fmt.Println("pinit: not supported operating system, sorry bro")
+		fmt.Println("pinit: unsupported operating system, sorry bro")
 		os.Exit(3)
 	}
 
@@ -26,4 +29,8 @@ func main() {
 		fmt.Println("pinit: Fatal error: unknown error loadConfResult = false")
 		os.Exit(2)
 	}
+
+	servicesPath = config["services_path"].(string)
+
+	Init()
 }

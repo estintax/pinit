@@ -21,7 +21,7 @@ func main() {
 	case "windows":
 		loadConfResult = LoadConfig("C:\\pinit\\configuration.json")
 	default:
-		fmt.Println("pinit: unsupported operating system, sorry bro")
+		fmt.Println("pinit: unsupported operating system\nDetected operating system: " + runtime.GOOS)
 		os.Exit(3)
 	}
 

@@ -32,7 +32,7 @@ func ParseInitTab(path string) []string {
 }
 
 func ExecSysInit(script string) bool {
-	cmd := exec.Command(script)
+	cmd := exec.Command(config["shell"].(string), script)
 	err := cmd.Start()
 	if err != nil {
 		fmt.Println("pinit: Error: Failed to run sysinit script\nMore: " + err.Error())

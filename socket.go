@@ -20,7 +20,7 @@ func StartServer(addr string) {
 }
 
 func ConnectionHandler(conn net.Conn) {
-	conn.Write([]byte("INFO: pinit services controller"))
+	conn.Write([]byte("INFO: pinit services controller\n"))
 	for {
 		var data string
 		bytes := make([]byte, 1024)
@@ -39,13 +39,13 @@ func ConnectionHandler(conn net.Conn) {
 			if len(params) > 1 {
 				proc := StartService(params[1], false)
 				if proc != nil {
-					conn.Write([]byte("START SUCCESS"))
+					conn.Write([]byte("START SUCCESS\n"))
 				} else {
-					conn.Write([]byte("START FAIL"))
+					conn.Write([]byte("START FAIL\n"))
 				}
 			}
 		case "PING":
-			conn.Write([]byte("PONG"))
+			conn.Write([]byte("PONG\n"))
 		}
 	}
 }

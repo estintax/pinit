@@ -45,7 +45,7 @@ func ExecSysInit(script string) bool {
 func InitInittab() {
 	var inittab []string
 	switch runtime.GOOS {
-	case "linux":
+	case "linux", "freebsd":
 		inittab = ParseInitTab("/etc/inittab")
 	case "windows":
 		inittab = ParseInitTab("C:\\pinit\\inittab")

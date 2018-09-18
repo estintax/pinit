@@ -16,7 +16,7 @@ func main() {
 
 	var loadConfResult bool
 	switch runtime.GOOS {
-	case "linux":
+	case "linux", "freebsd":
 		loadConfResult = LoadConfig("/etc/pinit/configuration.json")
 	case "windows":
 		loadConfResult = LoadConfig("C:\\pinit\\configuration.json")

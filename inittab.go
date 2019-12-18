@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
 	"runtime"
@@ -11,8 +10,7 @@ import (
 func ParseInitTab(path string) []string {
 	file, err := os.Open(path)
 	if err != nil {
-		fmt.Println("pinit: Fatal error: an error occured while opening inittab file\nMore: " + err.Error())
-		os.Exit(2)
+		FatalError("an error occured while opening inittab file", err)
 	}
 
 	var inittab string
@@ -20,7 +18,7 @@ func ParseInitTab(path string) []string {
 	data := make([]byte, stat.Size())
 	length, err := file.Read(data)
 	if err != nil {
-		fmt.Println("pinit: Fatal error: an error occured while reading inittab file\nMore: " + err.Error())
+		FatalError("an error occured while reading inittab file", err)
 		os.Exit(2)
 	}
 
@@ -35,7 +33,7 @@ func ExecSysInit(script string) bool {
 	cmd := exec.Command(config["shell"].(string), script)
 	err := cmd.Start()
 	if err != nil {
-		fmt.Println("pinit: Error: Failed to run sysinit script\nMore: " + err.Error())
+		Error("Failed to run sysinit script", err)
 		return false
 	}
 
@@ -50,7 +48,7 @@ func InitInittab() {
 	case "windows":
 		inittab = ParseInitTab("C:\\pinit\\inittab")
 	default:
-		fmt.Println("pinit: unsupported operating system")
+		FatalError("unsupported operating system", nil)
 		os.Exit(3)
 	}
 

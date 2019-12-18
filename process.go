@@ -10,7 +10,7 @@ import (
 func ScanOnServices(rcdpath string) {
 	dir, err := ioutil.ReadDir(rcdpath)
 	if err != nil {
-		fmt.Println("pinit: Error: failed to scan services directory\nMore: " + err.Error())
+		Error("failed to scan services directory", err)
 	}
 
 	servicesPath = rcdpath
@@ -19,7 +19,7 @@ func ScanOnServices(rcdpath string) {
 		srvcName := dir[i].Name()
 		proc := StartService(srvcName, true)
 		if proc != nil {
-			fmt.Println("Started service " + srvcName)
+			fmt.Println("Started service " + COLOR_WHITE + srvcName + COLOR_RESET)
 			//startedService = append(startedService, *proc)
 		}
 	}
@@ -28,7 +28,7 @@ func ScanOnServices(rcdpath string) {
 func StartService(service string, checkOnEnabled bool) *os.Process {
 	serviceConf, err := os.Open(servicesPath + "/" + service)
 	if err != nil {
-		fmt.Println("pinit: Failed to open " + service + " service configuration file\nMore: " + err.Error())
+		Error("Failed to open " + service + " service configuration file", err)
 		return nil
 	}
 
@@ -36,18 +36,18 @@ func StartService(service string, checkOnEnabled bool) *os.Process {
 
 	stat, err := serviceConf.Stat()
 	if err != nil {
-		fmt.Println("pinit: Failed to read " + service + " service configuration file\nMore: " + err.Error())
+		Error("Failed to read " + service + " service configuration file", err)
 		return nil
 	}
 	data := make([]byte, stat.Size())
 	_, err = serviceConf.Read(data)
 	if err != nil {
-		fmt.Println("pinit: Failed to read " + service + " service configuration file\nMore: " + err.Error())
+		Error("Failed to read " + service + " service configuration file", err)
 		return nil
 	}
 	err = json.Unmarshal(data, &decoded)
 	if err != nil {
-		fmt.Println("pinit: Failed to parse " + service + " service configuration file\nMore: " + err.Error())
+		Error("Failed to parse " + service + " service configuration file", err)
 		return nil
 	}
 
@@ -55,7 +55,7 @@ func StartService(service string, checkOnEnabled bool) *os.Process {
 		if decoded["enabled"].(bool) == false {
 			return nil
 		} else {
-			fmt.Println("Starting service " + service + "...")
+			fmt.Println("Starting service " + COLOR_WHITE + service + COLOR_RESET + "...")
 		}
 	}
 
@@ -69,7 +69,7 @@ func StartService(service string, checkOnEnabled bool) *os.Process {
 	}
 	process, err := os.StartProcess(decoded["exec"].(string), args, &procAttr)
 	if err != nil {
-		fmt.Println("pinit: Failed to start service " + service + "\nMore: " + err.Error())
+		Warning("Failed to start service " + service, nil)
 	}
 
 	return process

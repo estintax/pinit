@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net"
 	"strings"
 )
@@ -9,7 +8,7 @@ import (
 func StartServer(addr string) {
 	ln, err := net.Listen("tcp", addr)
 	if err != nil {
-		fmt.Println("pinit: Error: failed to start socket server\nMore: " + err.Error())
+		Error("failed to start socket server", err)
 		return
 	}
 

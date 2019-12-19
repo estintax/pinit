@@ -33,4 +33,6 @@ func main() {
 	servicesPath = config["services_path"].(string)
 
 	Init()
+
+	select { }
 }

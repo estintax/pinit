@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	//"syscall"
 )
 
 func ScanOnServices(rcdpath string) {
@@ -59,9 +60,12 @@ func StartService(service string, checkOnEnabled bool) *os.Process {
 		}
 	}
 
+	// TODO: var sysProcAttr syscall.SysProcAttr
 	var procAttr os.ProcAttr
 	var args []string
-	procAttr.Dir = "/"
+
+	procAttr.Dir = decoded["workdir"].(string)
+
 	if decoded["args"].(string) != "" {
 		args = []string{decoded["exec"].(string), decoded["args"].(string)}
 	} else {
@@ -69,7 +73,7 @@ func StartService(service string, checkOnEnabled bool) *os.Process {
 	}
 	process, err := os.StartProcess(decoded["exec"].(string), args, &procAttr)
 	if err != nil {
-		Warning("Failed to start service " + service, nil)
+		Warning("Failed to start service " + COLOR_WHITE + service + COLOR_RESET, nil)
 	}
 
 	return process

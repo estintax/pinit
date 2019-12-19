@@ -33,7 +33,7 @@ func ExecSysInit(script string) bool {
 	cmd := exec.Command(config["shell"].(string), script)
 	err := cmd.Start()
 	if err != nil {
-		Error("Failed to run sysinit script", err)
+		Warning("Failed to run sysinit script", err)
 		return false
 	}
 
@@ -53,14 +53,17 @@ func InitInittab() {
 	}
 
 	for i := 0; i < len(inittab); i++ {
+		if inittab[i] == "" {
+			continue
+		}
 		args := strings.SplitN(inittab[i], ":", 4)
 		switch args[2] {
 		case "sysinit":
 			ExecSysInit(args[3])
 		case "respawn":
-			args := strings.Split(args[3], " ")
-			exec := args[0]
-			StartRespawnProcess(exec, args)
+			subargs := strings.Split(args[3], " ")
+			exec := subargs[0]
+			go StartRespawnProcess(exec, subargs[1:])
 		}
 	}
 }

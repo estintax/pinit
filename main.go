@@ -6,11 +6,6 @@ import (
 	"runtime"
 )
 
-var config map[string]interface{}
-var servicesPath string
-
-//var startedService []os.Process
-
 func main() {
 	fmt.Printf("%sp%si%sn%si%st%s (c) 2018-2019 Maksim Pinigin\n", COLOR_LIGHT_GREEN, COLOR_LIGHT_RED, COLOR_LIGHT_CYAN, COLOR_LIGHT_PURPLE, COLOR_YELLOW, COLOR_RESET)
 

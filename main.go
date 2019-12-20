@@ -9,6 +9,8 @@ import (
 func main() {
 	fmt.Printf("%sp%si%sn%si%st%s (c) 2018-2019 Maksim Pinigin\n", COLOR_LIGHT_GREEN, COLOR_LIGHT_RED, COLOR_LIGHT_CYAN, COLOR_LIGHT_PURPLE, COLOR_YELLOW, COLOR_RESET)
 
+	servicesPids = make(map[string]int)
+
 	var loadConfResult bool
 	switch runtime.GOOS {
 	case "linux", "freebsd":

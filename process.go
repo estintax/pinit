@@ -21,7 +21,6 @@ func ScanOnServices(rcdpath string) {
 		proc := StartService(srvcName, true)
 		if proc != nil {
 			fmt.Println("Started service " + COLOR_WHITE + srvcName + COLOR_RESET)
-			//startedService = append(startedService, *proc)
 		}
 	}
 }
@@ -76,5 +75,34 @@ func StartService(service string, checkOnEnabled bool) *os.Process {
 		Warning("Failed to start service " + COLOR_WHITE + service + COLOR_RESET, nil)
 	}
 
+	servicesPids[service] = process.Pid
+
+	go func (service string, process *os.Process)  {
+		_, err := process.Wait()
+		if err != nil {
+			Warning("somethings went wrong with service " + COLOR_WHITE + service + COLOR_RESET, err)
+			return
+		}
+		delete(servicesPids, service)
+	}(service, process)
+
 	return process
+}
+
+
+func StopService(service string) bool {
+	if _, ok := servicesPids[service]; ok == true {
+		proc, err := os.FindProcess(servicesPids[service])
+		if err != nil {
+			delete(servicesPids, service)
+			return false
+		}
+
+		proc.Signal(os.Interrupt)
+		return true
+	} else {
+		return false
+	}
+
+	return false
 }

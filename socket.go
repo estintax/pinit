@@ -43,6 +43,15 @@ func ConnectionHandler(conn net.Conn) {
 					conn.Write([]byte("START FAIL\n"))
 				}
 			}
+		case "STOP":
+			if len(params) > 1 {
+				result := StopService(params[1])
+				if result == true {
+					conn.Write([]byte("STOP SUCCESS\n"))
+				} else {
+					conn.Write([]byte("STOP FAIL\n"))
+				}
+			}
 		case "PING":
 			conn.Write([]byte("PONG\n"))
 		}

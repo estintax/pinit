@@ -20,7 +20,7 @@ func ScanOnServices(rcdpath string) {
 		srvcName := dir[i].Name()
 		proc := StartService(srvcName, true)
 		if proc != nil {
-			fmt.Println("Started service " + COLOR_WHITE + srvcName + COLOR_RESET)
+			fmt.Printf("[  %sOK%s  ] Started service %s%s%s\n", COLOR_LIGHT_GREEN, COLOR_RESET, COLOR_WHITE, srvcName, COLOR_RESET)
 		}
 	}
 }
@@ -55,7 +55,7 @@ func StartService(service string, checkOnEnabled bool) *os.Process {
 		if decoded["enabled"].(bool) == false {
 			return nil
 		} else {
-			fmt.Println("Starting service " + COLOR_WHITE + service + COLOR_RESET + "...")
+			fmt.Printf("         Starting service %s%s%s...\n", COLOR_WHITE, service, COLOR_RESET)
 		}
 	}
 
@@ -72,7 +72,9 @@ func StartService(service string, checkOnEnabled bool) *os.Process {
 	}
 	process, err := os.StartProcess(decoded["exec"].(string), args, &procAttr)
 	if err != nil {
-		Warning("Failed to start service " + COLOR_WHITE + service + COLOR_RESET, nil)
+		fmt.Printf("[%sFAILED%s] Failed to start service %s%s%s\n", COLOR_LIGHT_RED, COLOR_RESET, COLOR_WHITE, service, COLOR_RESET)
+		Warning("Failed to start service " + COLOR_WHITE + service + COLOR_RESET, err)
+		return nil
 	}
 
 	servicesPids[service] = process.Pid

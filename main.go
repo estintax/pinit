@@ -29,6 +29,7 @@ func main() {
 
 	servicesPath = config["services_path"].(string)
 
+	InterruptHandle()
 	Init()
 
 	select { }

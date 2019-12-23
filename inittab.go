@@ -64,6 +64,12 @@ func InitInittab() {
 			subargs := strings.Split(args[3], " ")
 			exec := subargs[0]
 			go StartRespawnProcess(exec, subargs[1:])
+		case "shutdown":
+			subargs := strings.Split(args[3], " ")
+			cmd := Command{
+				cmd: subargs[0],
+				args: subargs[1:] }
+			shutdownCmds = append(shutdownCmds, cmd)
 		}
 	}
 }

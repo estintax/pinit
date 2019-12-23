@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"time"
 	//"syscall"
 )
 
@@ -79,14 +80,14 @@ func StartService(service string, checkOnEnabled bool) *os.Process {
 
 	servicesPids[service] = process.Pid
 
-	go func (service string, process *os.Process)  {
+	/*go func (service string, process *os.Process)  {
 		_, err := process.Wait()
 		if err != nil {
 			Warning("somethings went wrong with service " + COLOR_WHITE + service + COLOR_RESET, err)
 			return
 		}
 		delete(servicesPids, service)
-	}(service, process)
+	}(service, process)*/
 
 	return process
 }
@@ -100,7 +101,18 @@ func StopService(service string) bool {
 			return false
 		}
 
+		go func (pid int)  {
+			time.Sleep(30 * time.Second)
+			if proc, err := os.FindProcess(pid); err == nil {
+				proc.Kill()
+				return
+			} else {
+				return
+			}
+		}(servicesPids[service])
 		proc.Signal(os.Interrupt)
+		_, err = proc.Wait()
+		delete(servicesPids, service)
 		return true
 	} else {
 		return false

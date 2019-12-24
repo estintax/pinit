@@ -34,3 +34,19 @@ func SetHostname() {
     fmt.Printf("[  %sOK%s  ] Hostname is set to %s%s%s\n", COLOR_LIGHT_GREEN, COLOR_RESET, COLOR_WHITE, hostname, COLOR_RESET)
   }
 }
+
+func SetCADState(state bool) bool {
+  var err error
+  if state {
+    err = syscall.Reboot(syscall.LINUX_REBOOT_CMD_CAD_ON)
+  } else {
+    err = syscall.Reboot(syscall.LINUX_REBOOT_CMD_CAD_OFF)
+  }
+
+  if err != nil {
+    Warning("unable to change CAD state", err)
+    return false
+  } else {
+    return true
+  }
+}

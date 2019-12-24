@@ -10,6 +10,10 @@ func StartRespawnProcess(exec string, args []string) {
 	procAttr.Files = []*os.File{os.Stdin, os.Stdout, os.Stderr}
 
 	for {
+		if shutdownProcess {
+			break
+		}
+		
 		process, err := os.StartProcess(exec, args, &procAttr)
 		if err != nil {
 			Warning("Failed to start respawn process " + COLOR_WHITE + exec + COLOR_RESET, err)

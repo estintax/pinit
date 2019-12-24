@@ -8,6 +8,8 @@ import (
 
 func Exit(reboot int) {
   StopAllServices()
+  fmt.Println("         Killing other processes...")
+  KillAllProcesses()
   UnmountAll()
   if testMode {
     fmt.Printf("reboot: %d\n", reboot)

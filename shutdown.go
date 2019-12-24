@@ -10,9 +10,10 @@ func Exit(reboot int) {
   StopAllServices()
   UnmountAll()
   if testMode {
+    fmt.Printf("reboot: %d\n", reboot)
     os.Exit(0)
   } else {
-    syscall.Reboot(syscall.LINUX_REBOOT_CMD_RESTART)
+    Reboot(reboot)
   }
 }
 
@@ -48,5 +49,16 @@ func UnmountAll() {
     } else {
       fmt.Printf("[  %sOK%s  ] Unmounted %s%s%s\n", COLOR_LIGHT_GREEN, COLOR_RESET, COLOR_WHITE, mounts[i].target, COLOR_RESET)
     }
+  }
+}
+
+func Reboot(how int) {
+  switch how {
+  case 0:
+    syscall.Reboot(syscall.LINUX_REBOOT_CMD_HALT)
+  case 1:
+    syscall.Reboot(syscall.LINUX_REBOOT_CMD_POWER_OFF)
+  case 2:
+    syscall.Reboot(syscall.LINUX_REBOOT_CMD_RESTART)
   }
 }

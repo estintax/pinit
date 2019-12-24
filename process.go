@@ -49,7 +49,7 @@ func KillAllProcesses() {
       fmt.Printf("SIGTERM %d\n", proc.Pid)
     } else {
       go func (pid int)  {
-  			time.Sleep(30 * time.Second)
+  			time.Sleep(5 * time.Second)
   			if proc, err := os.FindProcess(pid); err == nil {
   				proc.Kill()
   				return

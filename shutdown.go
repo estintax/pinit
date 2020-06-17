@@ -7,6 +7,7 @@ import (
 )
 
 func Exit(reboot int) {
+  shutdownProcess = true
   StopAllServices()
   fmt.Println("         Killing other processes...")
   KillAllProcesses()
